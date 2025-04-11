@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <meta name="description" content="Beautiful Pomodoro Timer with task management">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pomodoro: {
+                            primary: "#e74c3c",
+                            secondary: "#c0392b",
+                            light: "#f5f5f5"
+                        },
+                        task: {
+                            add: "#2ecc71",
+                            hover: "#27ae60"
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8 max-w-md">
+        <!-- Header with Dark Mode Toggle -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-pomodoro-primary dark:text-pomodoro-secondary">Pomodoro Timer</h1>
+            <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                <svg id="sun-icon" class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg id="moon-icon" class="w-6 h-6 text-blue-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Settings Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transition-all hover:shadow-xl">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Timer Settings</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <label for="work-duration" class="text-gray-700 dark:text-gray-300">Work Duration:</label>
+                    <input type="number" id="work-duration" min="1" max="60" value="25" 
+                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="short-break" class="text-gray-700 dark:text-gray-300">Short Break:</label>
+                    <input type="number" id="short-break" min="1" max="15" value="5" 
+                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="long-break" class="text-gray-700 dark:text-gray-300">Long Break:</label>
+                    <input type="number" id="long-break" min="1" max="30" value="15" 
+                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="pomodoros-before-long-break" class="text-gray-700 dark:text-gray-300">Pomodoros before long break:</label>
+                    <input type="number" id="pomodoros-before-long-break" min="1" max="10" value="4" 
+                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timer Section -->
+        <div class="bg-pomodoro-primary dark:bg-pomodoro-secondary text-white rounded-xl shadow-lg p-6 mb-6 text-center transition-all hover:shadow-xl">
+            <div id="timer-mode" class="text-lg mb-2 font-medium">Ready to work</div>
+            <div id="timer" class="text-7xl font-bold my-6 font-mono tracking-tighter">25:00</div>
+            <div class="flex justify-center space-x-4">
+                <button id="start-btn" class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-6 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95">
+                    Start
+                </button>
+                <button id="pause-btn" disabled class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-6 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95">
+                    Pause
+                </button>
+                <button id="reset-btn" class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-6 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95">
+                    Reset
+                </button>
+            </div>
+        </div>
+        
+        <!-- Task Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Tasks</h2>
+            <div class="flex mb-4">
+                <input type="text" id="task-input" placeholder="Add a new task..." 
+                       class="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pomodoro-primary dark:focus:ring-pomodoro-secondary bg-white dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
+                <button id="add-task" class="bg-task-add text-white px-4 py-2 rounded-r-lg hover:bg-task-hover transition-all shadow-md hover:shadow-lg active:scale-95">
+                    Add
+                </button>
+            </div>
+            <ul id="task-list" class="divide-y divide-gray-200 dark:divide-gray-700"></ul>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6 transition-all hover:shadow-xl">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Today's Stats</h2>
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                    <div class="text-2xl font-bold text-pomodoro-primary dark:text-pomodoro-secondary" id="completed-pomodoros">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Completed</div>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                    <div class="text-2xl font-bold text-blue-500" id="completed-tasks">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Tasks</div>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                    <div class="text-2xl font-bold text-green-500" id="focus-time">0:00</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Focus Time</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const timerDisplay = document.getElementById('timer');
+        const timerMode = document.getElementById('timer-mode');
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const workDurationInput = document.getElementById('work-duration');
+        const shortBreakInput = document.getElementById('short-break');
+        const longBreakInput = document.getElementById('long-break');
+        const pomodorosBeforeLongBreakInput = document.getElementById('pomodoros-before-long-break');
+        const taskInput = document.getElementById('task-input');
+        const addTaskBtn = document.getElementById('add-task');
+        const taskList = document.getElementById('task-list');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const completedPomodorosEl = document.getElementById('completed-pomodoros');
+        const completedTasksEl = document.getElementById('completed-tasks');
+        const focusTimeEl = document.getElementById('focus-time');
+        
+        // Timer Variables
+        let timeLeft = 25 * 60;
+        let timerInterval;
+        let isRunning = false;
+        let isWorkTime = true;
+        let pomodoroCount = 0;
+        let completedTasks = 0;
+        let focusTimeSeconds = 0;
+        let focusTimeInterval;
+        
+        // Initialize Timer
+        function initializeTimer() {
+            updateDisplay();
+            updateStats();
+        }
+        
+        // Update Timer Display
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Add pulse animation when time is running
+            if (isRunning) {
+                timerDisplay.classList.add('animate-pulse-slow');
+            } else {
+                timerDisplay.classList.remove('animate-pulse-slow');
+            }
+        }
+        
+        // Update Stats
+        function updateStats() {
+            completedPomodorosEl.textContent = pomodoroCount;
+            completedTasksEl.textContent = completedTasks;
+            
+            const focusMinutes = Math.floor(focusTimeSeconds / 60);
+            const focusSeconds = focusTimeSeconds % 60;
+            focusTimeEl.textContent = `${focusMinutes}:${focusSeconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Start Timer
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+                
+                // Start focus time tracking
+                if (isWorkTime) {
+                    focusTimeInterval = setInterval(() => {
+                        focusTimeSeconds++;
+                        updateStats();
+                    }, 1000);
+                }
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        startBtn.disabled = false;
+                        pauseBtn.disabled = true;
+                        
+                        // Play sound
+                        const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+                        audio.play();
+                        
+                        // Stop focus time tracking
+                        if (isWorkTime) {
+                            clearInterval(focusTimeInterval);
+                        }
+                        
+                        // Switch mode
+                        if (isWorkTime) {
+                            pomodoroCount++;
+                            const isLongBreak = pomodoroCount % parseInt(pomodorosBeforeLongBreakInput.value) === 0;
+                            timeLeft = isLongBreak 
+                                ? parseInt(longBreakInput.value) * 60 
+                                : parseInt(shortBreakInput.value) * 60;
+                            timerMode.textContent = isLongBreak ? "Long Break Time!" : "Short Break Time!";
+                        } else {
+                            timeLeft = parseInt(workDurationInput.value) * 60;
+                            timerMode.textContent = "Work Time!";
+                            
+                            // Start focus time tracking again
+                            focusTimeInterval = setInterval(() => {
+                                focusTimeSeconds++;
+                                updateStats();
+                            }, 1000);
+                        }
+                        
+                        isWorkTime = !isWorkTime;
+                        updateDisplay();
+                        updateStats();
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Pause Timer
+        function pauseTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                
+                // Pause focus time tracking
+                if (isWorkTime) {
+                    clearInterval(focusTimeInterval);
+                }
+            }
+        }
+        
+        // Reset Timer
+        function resetTimer() {
+            pauseTimer();
+            isWorkTime = true;
+            timeLeft = parseInt(workDurationInput.value) * 60;
+            timerMode.textContent = "Ready to work";
+            updateDisplay();
+        }
+        
+        // Add Task
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                const taskItem = document.createElement('li');
+                taskItem.className = 'py-3 flex items-center group';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'mr-3 h-5 w-5 text-pomodoro-primary dark:text-pomodoro-secondary rounded focus:ring-pomodoro-primary dark:focus:ring-pomodoro-secondary bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600';
+                
+                const taskTextSpan = document.createElement('span');
+                taskTextSpan.className = 'flex-grow text-gray-800 dark:text-gray-200';
+                taskTextSpan.textContent = taskText;
+                
+                const taskActions = document.createElement('div');
+                taskActions.className = 'flex space-x-2 ml-2 opacity-0 group-hover:opacity-100 transition-opacity';
+                
+                const pomodoroBtn = document.createElement('button');
+                pomodoroBtn.innerHTML = '🍅';
+                pomodoroBtn.className = 'p-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 hover:text-pomodoro-primary dark:hover:text-pomodoro-secondary transition-colors';
+                pomodoroBtn.title = 'Start Pomodoro for this task';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerHTML = '🗑️';
+                deleteBtn.className = 'p-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 hover:text-red-500 transition-colors';
+                deleteBtn.title = 'Delete task';
+                
+                // Event Listeners
+                checkbox.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    taskTextSpan.classList.toggle('line-through', isChecked);
+                    taskTextSpan.classList.toggle('text-gray-400', isChecked);
+                    taskTextSpan.classList.toggle('dark:text-gray-500', isChecked);
+                    
+                    if (isChecked) {
+                        completedTasks++;
+                        updateStats();
+                    } else {
+                        completedTasks--;
+                        updateStats();
+                    }
+                });
+                
+                pomodoroBtn.addEventListener('click', function() {
+                    timeLeft = parseInt(workDurationInput.value) * 60;
+                    isWorkTime = true;
+                    updateDisplay();
+                    timerMode.textContent = `Working on: ${taskText}`;
+                    if (!isRunning) {
+                        startTimer();
+                    }
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    taskItem.remove();
+                });
+                
+                // Append elements
+                taskActions.appendChild(pomodoroBtn);
+                taskActions.appendChild(deleteBtn);
+                
+                taskItem.appendChild(checkbox);
+                taskItem.appendChild(taskTextSpan);
+                taskItem.appendChild(taskActions);
+                
+                taskList.appendChild(taskItem);
+                taskInput.value = '';
+            }
+        }
+        
+        // Toggle Dark Mode
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+            sunIcon.classList.toggle('hidden', isDark);
+            moonIcon.classList.toggle('hidden', !isDark);
+        }
+        
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+        
+        // Event Listeners
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        resetBtn.addEventListener('click', resetTimer);
+        addTaskBtn.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+        
+        // Settings Change Listeners
+        workDurationInput.addEventListener('change', function() {
+            if (!isRunning && isWorkTime) {
+                timeLeft = parseInt(this.value) * 60;
+                updateDisplay();
+            }
+        });
+        
+        shortBreakInput.addEventListener('change', function() {
+            if (!isRunning && !isWorkTime && pomodoroCount % parseInt(pomodorosBeforeLongBreakInput.value) !== 0) {
+                timeLeft = parseInt(this.value) * 60;
+                updateDisplay();
+            }
+        });
+        
+        longBreakInput.addEventListener('change', function() {
+            if (!isRunning && !isWorkTime && pomodoroCount % parseInt(pomodorosBeforeLongBreakInput.value) === 0) {
+                timeLeft = parseInt(this.value) * 60;
+                updateDisplay();
+            }
+        });
+        
+        // Initialize
+        initializeTimer();
+    </script>
+</body>
+</html>
