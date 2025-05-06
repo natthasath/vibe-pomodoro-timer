@@ -31,11 +31,11 @@
     </script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
-    <div class="container mx-auto px-4 py-8 max-w-md">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
         <!-- Header with Dark Mode Toggle -->
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-pomodoro-primary dark:text-pomodoro-secondary">Pomodoro Timer</h1>
-            <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+        <div class="flex justify-between items-center mb-12">
+            <h1 class="text-4xl font-bold text-pomodoro-primary dark:text-pomodoro-secondary">Pomodoro Timer</h1>
+            <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700" title="Toggle dark mode">
                 <svg id="sun-icon" class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
@@ -45,78 +45,80 @@
             </button>
         </div>
         
-        <!-- Settings Section -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transition-all hover:shadow-xl">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Timer Settings</h2>
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <label for="work-duration" class="text-gray-700 dark:text-gray-300">Work Duration:</label>
-                    <input type="number" id="work-duration" min="1" max="60" value="25" 
-                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
-                </div>
-                <div class="flex items-center justify-between">
-                    <label for="short-break" class="text-gray-700 dark:text-gray-300">Short Break:</label>
-                    <input type="number" id="short-break" min="1" max="15" value="5" 
-                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
-                </div>
-                <div class="flex items-center justify-between">
-                    <label for="long-break" class="text-gray-700 dark:text-gray-300">Long Break:</label>
-                    <input type="number" id="long-break" min="1" max="30" value="15" 
-                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
-                </div>
-                <div class="flex items-center justify-between">
-                    <label for="pomodoros-before-long-break" class="text-gray-700 dark:text-gray-300">Pomodoros before long break:</label>
-                    <input type="number" id="pomodoros-before-long-break" min="1" max="10" value="4" 
-                           class="w-16 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white">
-                </div>
-            </div>
-        </div>
-        
         <!-- Timer Section -->
-        <div class="bg-pomodoro-primary dark:bg-pomodoro-secondary text-white rounded-xl shadow-lg p-6 mb-6 text-center transition-all hover:shadow-xl">
-            <div id="timer-mode" class="text-lg mb-2 font-medium">Ready to work</div>
-            <div id="timer" class="text-7xl font-bold my-6 font-mono tracking-tighter">25:00</div>
-            <div class="flex justify-center space-x-4">
-                <button id="start-btn" class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-6 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95">
+        <div class="bg-pomodoro-primary dark:bg-pomodoro-secondary text-white rounded-xl shadow-lg p-8 mb-8 text-center transition-all hover:shadow-xl">
+            <div id="timer-mode" class="text-xl mb-4 font-medium">Ready to work</div>
+            <div id="timer" class="text-8xl font-bold my-8 font-mono tracking-tighter">25:00</div>
+            <div class="flex justify-center space-x-6">
+                <button id="start-btn" class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95 text-lg">
                     Start
                 </button>
-                <button id="pause-btn" disabled class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-6 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95">
+                <button id="pause-btn" disabled class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95 text-lg">
                     Pause
                 </button>
-                <button id="reset-btn" class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-6 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95">
+                <button id="reset-btn" class="bg-white text-pomodoro-primary dark:text-pomodoro-secondary px-8 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-all shadow-md hover:shadow-lg active:scale-95 text-lg">
                     Reset
                 </button>
             </div>
         </div>
-        
-        <!-- Task Section -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Tasks</h2>
-            <div class="flex mb-4">
-                <input type="text" id="task-input" placeholder="Add a new task..." 
-                       class="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pomodoro-primary dark:focus:ring-pomodoro-secondary bg-white dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
-                <button id="add-task" class="bg-task-add text-white px-4 py-2 rounded-r-lg hover:bg-task-hover transition-all shadow-md hover:shadow-lg active:scale-95">
-                    Add
-                </button>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Settings Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200">Timer Settings</h2>
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <label for="work-duration" class="text-lg text-gray-700 dark:text-gray-300">Work Duration:</label>
+                        <input type="number" id="work-duration" min="1" max="60" value="25" 
+                               class="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white text-lg">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label for="short-break" class="text-lg text-gray-700 dark:text-gray-300">Short Break:</label>
+                        <input type="number" id="short-break" min="1" max="15" value="5" 
+                               class="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white text-lg">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label for="long-break" class="text-lg text-gray-700 dark:text-gray-300">Long Break:</label>
+                        <input type="number" id="long-break" min="1" max="30" value="15" 
+                               class="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white text-lg">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label for="pomodoros-before-long-break" class="text-lg text-gray-700 dark:text-gray-300">Pomodoros before long break:</label>
+                        <input type="number" id="pomodoros-before-long-break" min="1" max="10" value="4" 
+                               class="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center bg-white dark:bg-gray-700 dark:text-white text-lg">
+                    </div>
+                </div>
             </div>
-            <ul id="task-list" class="divide-y divide-gray-200 dark:divide-gray-700"></ul>
+
+            <!-- Task Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200">Tasks</h2>
+                <div class="flex mb-6">
+                    <input type="text" id="task-input" placeholder="Add a new task..." 
+                           class="flex-grow px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pomodoro-primary dark:focus:ring-pomodoro-secondary bg-white dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg">
+                    <button id="add-task" class="bg-task-add text-white px-6 py-3 rounded-r-lg hover:bg-task-hover transition-all shadow-md hover:shadow-lg active:scale-95 text-lg">
+                        Add
+                    </button>
+                </div>
+                <ul id="task-list" class="divide-y divide-gray-200 dark:divide-gray-700"></ul>
+            </div>
         </div>
         
         <!-- Stats Section -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6 transition-all hover:shadow-xl">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Today's Stats</h2>
-            <div class="grid grid-cols-3 gap-4 text-center">
-                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <div class="text-2xl font-bold text-pomodoro-primary dark:text-pomodoro-secondary" id="completed-pomodoros">0</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Completed</div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mt-8 transition-all hover:shadow-xl">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200">Today's Stats</h2>
+            <div class="grid grid-cols-3 gap-8 text-center">
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
+                    <div class="text-4xl font-bold text-pomodoro-primary dark:text-pomodoro-secondary" id="completed-pomodoros">0</div>
+                    <div class="text-lg text-gray-600 dark:text-gray-400 mt-2">Completed</div>
                 </div>
-                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <div class="text-2xl font-bold text-blue-500" id="completed-tasks">0</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Tasks</div>
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
+                    <div class="text-4xl font-bold text-blue-500" id="completed-tasks">0</div>
+                    <div class="text-lg text-gray-600 dark:text-gray-400 mt-2">Tasks</div>
                 </div>
-                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <div class="text-2xl font-bold text-green-500" id="focus-time">0:00</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Focus Time</div>
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
+                    <div class="text-4xl font-bold text-green-500" id="focus-time">0:00</div>
+                    <div class="text-lg text-gray-600 dark:text-gray-400 mt-2">Focus Time</div>
                 </div>
             </div>
         </div>
