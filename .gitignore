@@ -2,9 +2,6 @@
 node_modules/
 package-lock.json
 
-# Build output
-styles.css
-
 # IDE and editor files
 .vscode/
 .idea/
