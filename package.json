@@ -1,0 +1,27 @@
+{
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5"
+  },
+  "name": "startup-pomodoro-timer",
+  "version": "1.0.0",
+  "description": "The Pomodoro Timer boosts productivity by breaking work into 25-minute focused intervals, followed by short 5-minute breaks. This time management method helps maintain concentration, reduce burnout, and improve efficiency throughout the day.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i ./input.css -o ./styles.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natthasath/startup-pomodoro-timer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/natthasath/startup-pomodoro-timer/issues"
+  },
+  "homepage": "https://github.com/natthasath/startup-pomodoro-timer#readme"
+}
