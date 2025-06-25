@@ -1,3 +1,3 @@
 # Vibe Pomodoro Timer
 
-The Pomodoro Timer boosts productivity by breaking work into 25-minute focused intervals, followed by short 5-minute breaks. This time management method helps maintain concentration, reduce burnout, and improve efficiency throughout the day.
+Vibe Pomodoro Timer boosts productivity with customizable work and break intervals using the proven Pomodoro Technique. Stay focused, manage time effectively, and avoid burnout by balancing focused sprints with regular breaks—all in a simple, intuitive interface.
